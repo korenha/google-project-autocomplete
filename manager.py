@@ -22,4 +22,5 @@ from terminal import terminal
 
 def manager():
     load_data()
+    print("begin")
     terminal()

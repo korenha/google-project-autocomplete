@@ -26,8 +26,7 @@ class StringsData:
 
     def __push_item(self, new_item, list_):
         l = [item.get_id_sen() for item in list_]
-        id = new_item.get_id_sen()
-        if id in l or len(list_) == self.__max_size_of_list:
+        if new_item.get_id_sen() in l or len(list_) == self.__max_size_of_list:
             return list_
         list_.append(new_item)
 
@@ -59,17 +58,20 @@ class Data:
         self.__sentences_data = SentencesData()
 
     def insert(self, url, sentence):
-            sentence = clear_string(sentence)
+            sentance1 = clear_string(sentence)
             id = self.__sentences_data.insert((sentence, url))
-            for j in range(len(sentence)):
+            for j in range(len(sentance1)):
                 for k in range(j):
-                    self.__strings_data.insert(sentence[k:j], id, k)
+                    self.__strings_data.insert(sentance1[k:j], id, k)
 
     def find(self, string: str):
         return self.__strings_data.find(string)
 
     def get_sentence(self, _id):
         return self.__sentences_data.get_sentence(_id)
+
+    def get_url(self, _id):
+        return self.__sentences_data.get_url(_id)
 
 
 
