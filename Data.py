@@ -1,16 +1,18 @@
 from collections import defaultdict
 from utils import clear_string
 
-class StringDescribtor:
-    def __init__(self, id_sentence, offset):
-        self.__id_sentence: int = id_sentence
-        self.__offset = offset
 
-    def get_id_sen(self):
-        return self.__id_sentence
+# class StringDescribtor:
+#     def __init__(self, id_sentence, offset):
+#         self.__id_sentence: int = id_sentence
+#         self.__offset = offset
+#
+#     def get_id_sen(self):
+#         return self.__id_sentence
+#
+#     def get_offset(self):
+#         return self.__offset
 
-    def get_offset(self):
-        return self.__offset
 
 class StringsData:
     def __init__(self):
@@ -24,17 +26,17 @@ class StringsData:
         return list_[:]
 
     def __push_item(self, new_item, list_):
-        l = [item.get_id_sen() for item in list_]
-        if new_item.get_id_sen() in l or len(list_) == self.__max_size_of_list:
+        if new_item in list_ or len(list_) == self.__max_size_of_list:
             return list_
         list_.append(new_item)
 
-    def insert(self, string, id, offset):
+    def insert(self, string, id):
         list_ = self.find(string)
         if len(list_) == 0:
-            self.__dict[clear_string(string)].append(StringDescribtor(id, offset))
+            self.__dict[clear_string(string)].append(id)
         else:
-            self.__push_item(StringDescribtor(id, offset), self.__dict[clear_string(string)])
+            self.__push_item(id, self.__dict[clear_string(string)])
+
 
 class SentencesData:
     def __init__(self):
@@ -50,18 +52,21 @@ class SentencesData:
     def get_url(self, _id):
         return self.__list[_id][1]
 
+    def get_offset(self,_id):
+        return self.__list[_id][2]
+
 
 class Data:
     def __init__(self):
         self.__strings_data = StringsData()
         self.__sentences_data = SentencesData()
 
-    def insert(self, url, sentence):
+    def insert(self, url, sentence, offset):
             sentance1 = clear_string(sentence)
-            id = self.__sentences_data.insert((sentence, url))
+            id = self.__sentences_data.insert((sentence, url, offset))
             for j in range(len(sentance1)):
                 for k in range(j):
-                    self.__strings_data.insert(sentance1[k:j], id, k)
+                    self.__strings_data.insert(sentance1[k:j], id)
 
     def find(self, string: str):
         return self.__strings_data.find(string)
@@ -72,21 +77,8 @@ class Data:
     def get_url(self, _id):
         return self.__sentences_data.get_url(_id)
 
+    def get_offset(self, _id):
+        return self.__sentences_data.get_offset(_id)
 
 
 data = Data()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

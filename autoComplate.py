@@ -1,5 +1,6 @@
 from Data import data
 
+
 class AutoCompleteData:
 
     def __init__(self, complated_sentences, source_text, offset, score):
@@ -13,10 +14,8 @@ class AutoCompleteData:
             return False
         if self.source_text != other.source_text:
             return False
-
-        # if self.offset != other.offset:
-        #     return False
-
+        if self.offset != other.offset:
+            return False
         return True
 
 
@@ -54,8 +53,8 @@ def get_with_change(substring, auto_complete_list, index, score):
         return auto_complete_list
 
     for char in alphabet:
-        substr = f"{substring[:index]}{char}{substring[index+1:]}"
-        completed_sentences = get_perfect_completions(substr)
+        substring = substring[:index] + str(char) + substring[index + 1:]
+        completed_sentences = get_perfect_completions(substring)
         for item in completed_sentences:
             item.score -= score
         auto_complete_list = push_list_to_list(auto_complete_list, completed_sentences)
@@ -73,11 +72,8 @@ def get_with_add(substring, auto_complete_list, index, score):
         return auto_complete_list
 
     for char in alphabet:
-        substr = substring[:index+1]
-        substr += str(char)
-        substr += substring[index+1:]
-        print("add: ", substr)
-        completed_sentences = get_perfect_completions(substr)
+        substring = substring[:index + 1] + str(char) + substring[index + 1:]
+        completed_sentences = get_perfect_completions(substring)
         for item in completed_sentences:
             item.score -= score
         auto_complete_list = push_list_to_list(auto_complete_list, completed_sentences)
@@ -93,11 +89,8 @@ def get_with_delete(substring, auto_complete_list, index, score):
     if index != len(substring) - 1 and len(data.find(substring[index + 1:])) == 0:
         return auto_complete_list
 
-    substr = substring[:index]
-    if index != len(substring) - 1:
-        substr += substring[index + 1:]
-    print("deleted: ", substr)
-    completed_sentences = get_perfect_completions(substr)
+    substring = substring[:index] + substring[index + 1:]
+    completed_sentences = get_perfect_completions(substring)
     for item in completed_sentences:
         item.score -= score
     auto_complete_list = push_list_to_list(auto_complete_list, completed_sentences)
@@ -107,12 +100,12 @@ def get_with_delete(substring, auto_complete_list, index, score):
 
 
 def get_perfect_completions(substring):
-    completed_sentences = list(data.find(substring))
+    completed_sentences_id = list(data.find(substring))
     auto_complete = []
-    for item in completed_sentences:
-        auto = AutoCompleteData(data.get_sentence(item.get_id_sen()),
-                                data.get_url(item.get_id_sen()),
-                                item.get_offset(), len(substring) * 2)
+    for id in completed_sentences_id:
+        auto = AutoCompleteData(data.get_sentence(id),
+                                data.get_url(id),
+                                data.get_offset(id), len(substring) * 2)
         auto_complete.append(auto)
     return auto_complete
 
@@ -128,12 +121,12 @@ def get_best_k_completions(prefix):  # ->
     for index in range(4, length):
         if len(auto_complete_sentences) == 5:
             return auto_complete_sentences
-        auto_complete_sentences = get_with_delete(prefix, auto_complete_sentences, index,2)
+        auto_complete_sentences = get_with_delete(prefix, auto_complete_sentences, index, 2)
 
     for index in range(4, length + 1):
         if len(auto_complete_sentences) == 5:
             return auto_complete_sentences
-        auto_complete_sentences = get_with_add(prefix, auto_complete_sentences, index,2)
+        auto_complete_sentences = get_with_add(prefix, auto_complete_sentences, index, 2)
 
     functions_list = [
         [2, (3,), (get_with_change,)],
