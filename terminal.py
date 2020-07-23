@@ -2,11 +2,12 @@ from utils import clear_string
 from autoComplate import get_best_k_completions, print_best_k_completions
 import datetime
 
+
 def get_input():
     string = ""
-    new_input = input(string)
-    while new_input == "":
-        new_input = input(string)
+    new_input = input("")
+    while new_input == "" or new_input == " ":
+        new_input = input(">>>")
 
     while new_input == "" or new_input[len(new_input)-1] != '#':
         string += new_input

@@ -1,46 +1,47 @@
 from Data import data
 from terminal import terminal
+from utils import clear_string
+from os import listdir
+import glob, os
 
 
-def fill_sentences():
+def fill_sentences(file):
     sentences = data.get_sentences()
-    with open("technology_texts/python-3.8.4-docs-text/python-3.8.4-docs-text/about.txt", encoding="utf8") as file:
+    with open(file, encoding="utf8") as file:
         file_sentences = [line.rstrip() for line in file]
         for i, sentence in enumerate(file_sentences):
-            string = sentence
-            print(sentence)
-            sentences.insert((string, "technology_texts/RFC/Tasks.txt", i))
+            sentences.insert((sentence, "technology_texts/RFC/Tasks.txt", i))
 
     sentences.sort()
 
 
 def fill_substrings_dict():
-    counter = 0
+    count = 0
     sentences = data.get_sentences()
     print(len(sentences.get_sentences()))
     for i, sentence in enumerate(sentences.get_sentences()):
         for j in range(len(sentence[0])):
-            for k in range(j):
-                data.insert(sentence[0][k:j], i)
-                print(counter)
-                counter += 1
+            for k in range(11):
+                print(count," - ", i )
+                count += 1
+                data.insert(clear_string(sentence[0][j:j+k]), i)
+
+    # data.load_to_file("until_20.json")
+    # data.load_from_file("until_20.json")
 
 
 def load_data():
-    fill_sentences()
+    count = 0
+    for root, dirs, files in os.walk("./technology_texts/python-3.8.4-docs-text"):
+        for file in files:
+            if file.endswith(".txt"):
+                count += 1
+                print("file ",count )
+                fill_sentences(os.path.join(root, file))
     fill_substrings_dict()
-
-    # list_ = [
-    #     ("We are waiting for it to work...", "dir3/file2", 0),
-    #     ("To be or not to be, that's the question", "dir1/dir2/file1", 1),
-    #     ("hello world1", "dir1/dir2/file1", 2),
-    #     ("hello world2", "dir1/dir2/file1", 3),
-    #     ("hello world3", "dir1/dir2/file1", 4),
-    #     ("hello world4", "dir1/dir2/file1", 5)
-    # ]
 
 
 def manager():
     load_data()
-    print("begin")
+    print("let start:")
     terminal()

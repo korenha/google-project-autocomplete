@@ -1,9 +1,12 @@
 from collections import defaultdict
 from utils import clear_string
+import json
+import datetime
+import shelve
 
-class StringsData:
+class SubstringData:
     def __init__(self):
-        self.__dict = defaultdict(list)
+        self.__dict = shelve.open("substring_dict", writeback=True)
         self.__max_size_of_list = 5
 
     def find(self, string):
@@ -21,6 +24,14 @@ class StringsData:
     def insert(self, string, id):
         list_ = self.find(string)
         self.__dict[clear_string(string)] = self.__push_item(id, list_)
+
+    def load_to_file(self, file_name):
+        with open(file_name, "w") as the_file:
+            json.dump([self.__dict], the_file)
+
+    def load_from_file(self, file_name):
+        with open(file_name, "r") as the_file:
+            self.__dict = json.load(the_file)[0]
 
 
 class SentencesData:
@@ -41,7 +52,7 @@ class SentencesData:
         return self.__list[_id][2]
 
     def sort(self):
-        self.__list = sorted(self.__list, key=lambda x: x[0].lower())
+        self.__list = sorted(self.__list, key=lambda x: clear_string(x[0]))
 
     def get_sentences(self):
         return self.__list
@@ -49,14 +60,14 @@ class SentencesData:
 
 class Data:
     def __init__(self):
-        self.__strings_data = StringsData()
+        self.__substrings_data = SubstringData()
         self.__sentences_data = SentencesData()
 
     def insert(self, sentence, id):
-        self.__strings_data.insert(sentence, id)
+        self.__substrings_data.insert(sentence, id)
 
     def find(self, string: str):
-        return self.__strings_data.find(string)
+        return self.__substrings_data.find(string)
 
     def get_sentence(self, _id):
         return self.__sentences_data.get_sentence(_id)
@@ -69,5 +80,16 @@ class Data:
 
     def get_sentences(self):
         return self.__sentences_data
+
+    def load_to_file(self, file_name):
+        time = datetime.datetime.now()
+        self.__substrings_data.load_to_file(file_name)
+        print(datetime.datetime.now()-time)
+
+    def load_from_file(self, file_name):
+        time = datetime.datetime.now()
+        self.__substrings_data.load_from_file(file_name)
+        print(datetime.datetime.now()-time)
+
 
 data = Data()
