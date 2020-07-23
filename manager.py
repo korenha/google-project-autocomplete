@@ -1,7 +1,5 @@
-from Data import Data
-
-
-data = Data()
+from Data import data
+from terminal import terminal
 
 def load_data():
     list_ = [
@@ -11,13 +9,11 @@ def load_data():
         ("hello world2", "dir1/dir2/file1"),
         ("hello world3", "dir1/dir2/file1"),
         ("hello world4", "dir1/dir2/file1")
-            ]
+    ]
 
-    list_ = sorted(list_,key=lambda x: x[0].lower())
+    list_ = sorted(list_, key=lambda x: x[0].lower())
     for item in list_:
         data.insert(item[1], item[0])
-
-from terminal import terminal
 
 
 def manager():

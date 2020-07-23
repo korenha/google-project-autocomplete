@@ -1,6 +1,5 @@
-from manager import data
 from utils import clear_string
-from autoComplate import get_best_k_completions,print_best_k_completions
+from autoComplate import get_best_k_completions, print_best_k_completions
 def get_input():
     string = ""
     new_input = input(string)

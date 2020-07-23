@@ -1,4 +1,3 @@
-import re
 from collections import defaultdict
 from utils import clear_string
 
@@ -75,6 +74,7 @@ class Data:
 
 
 
+data = Data()
 
 
 
