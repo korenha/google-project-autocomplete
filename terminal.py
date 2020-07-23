@@ -1,5 +1,7 @@
 from utils import clear_string
 from autoComplate import get_best_k_completions, print_best_k_completions
+import datetime
+
 def get_input():
     string = ""
     new_input = input(string)
@@ -11,12 +13,15 @@ def get_input():
         yield clear_string(string)
         new_input = input(string)
 
+
 def terminal():
     while 1:
         print(">>>", end=" ")
         for string in get_input():
+            print(datetime.datetime.now())
             the_best = get_best_k_completions(string)
             print_best_k_completions(the_best)
+            print(datetime.datetime.now())
             print(">>>", end=" ")
 
 
