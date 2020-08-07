@@ -1,4 +1,4 @@
-from Data import data
+from src.Data import data
 
 
 class AutoCompleteData:

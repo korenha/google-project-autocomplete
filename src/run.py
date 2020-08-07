@@ -1,5 +1,5 @@
-from utils import clear_string
-from autoComplate import get_best_k_completions, print_best_k_completions
+from src.utils import clear_string
+from src.autoComplate import get_best_k_completions, print_best_k_completions
 import datetime
 
 

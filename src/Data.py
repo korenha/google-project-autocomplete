@@ -1,8 +1,8 @@
-from collections import defaultdict
-from utils import clear_string
+from src.utils import clear_string
 import json
 import datetime
 import shelve
+
 
 class SubstringData:
     def __init__(self):
@@ -10,7 +10,7 @@ class SubstringData:
         self.__max_size_of_list = 5
 
     def find(self, string):
-        list_ =  self.__dict.get(string)
+        list_ = self.__dict.get(string)
         if not list_:
             return list()
         return list_[:]
@@ -48,7 +48,7 @@ class SentencesData:
     def get_url(self, _id):
         return self.__list[_id][1]
 
-    def get_offset(self,_id):
+    def get_offset(self, _id):
         return self.__list[_id][2]
 
     def sort(self):
@@ -84,12 +84,12 @@ class Data:
     def load_to_file(self, file_name):
         time = datetime.datetime.now()
         self.__substrings_data.load_to_file(file_name)
-        print(datetime.datetime.now()-time)
+        print(datetime.datetime.now() - time)
 
     def load_from_file(self, file_name):
         time = datetime.datetime.now()
         self.__substrings_data.load_from_file(file_name)
-        print(datetime.datetime.now()-time)
+        print(datetime.datetime.now() - time)
 
 
 data = Data()

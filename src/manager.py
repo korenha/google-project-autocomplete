@@ -1,8 +1,7 @@
-from Data import data
-from terminal import terminal
-from utils import clear_string
-from os import listdir
-import glob, os
+from src.Data import data
+from src.run import terminal
+from src.utils import clear_string
+import os
 
 
 def fill_sentences(file):
